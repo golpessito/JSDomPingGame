@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activatePlayer, gamePlaying;
+var scores, roundScore, activatePlayer, gamePlaying, lastRoundDice, currentRoundDice;
 
 init();
 
@@ -18,23 +18,37 @@ document.querySelector(".btn-roll").addEventListener('click',function(){
   if(gamePlaying){
 
     // 1. Random number
-    var dice = Math.floor(Math.random()*6)+1;
+    currentRoundDice = Math.floor(Math.random()*6)+1;
 
     // 2. Display the result
     var diceDOM=document.querySelector(".dice");
     diceDOM.style.display = 'block';
-    diceDOM.src= 'dice-'+dice+'.png';
+    diceDOM.src= 'dice-'+currentRoundDice+'.png';
 
-    // 3. Update the round score IF the rolled number was a NOT 1
-    if (dice !== 1){
+
+    if((currentRoundDice === 6) && (lastRoundDice === 6))
+    {
+      // When roundDice and lastRoundDice both are not equal to 6, the player looses his ENTIRE score
+      scores[activatePlayer]=0;
+
+      // Update the UI
+      document.querySelector('#score-'+activatePlayer).textContent='0';
+      nextPlayer();
+    }
+    else if (currentRoundDice !== 1)
+    {
+      //Update the round score IF the rolled number was a NOT 1 and
       //Add score
-      roundScore += dice;
+      roundScore += currentRoundDice;
       document.querySelector('#current-'+activatePlayer).textContent=roundScore;
+
     }
     else
     {
       nextPlayer();
     }
+
+     lastRoundDice=currentRoundDice;
   }
 
 });
@@ -47,7 +61,7 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
     // Update the UI
     document.querySelector('#score-'+activatePlayer).textContent=scores[activatePlayer];
 
-    if (scores[activatePlayer] >= 20){
+    if (scores[activatePlayer] >= 100){
       document.querySelector('#name-'+activatePlayer).textContent="Winner!";
       document.querySelector('.dice').style.display='none';
       document.querySelector('.player-'+activatePlayer+'-panel').classList.add('winner');
@@ -67,6 +81,8 @@ function init(){
   roundScore = 0;
   activatePlayer = 0;
   gamePlaying = true;
+  lastRoundDice = 0;
+  currentRoundDice = 0;
 
   document.querySelector(".dice").style.display = 'none';
   document.getElementById('score-0').textContent= '0';
@@ -90,6 +106,8 @@ function nextPlayer(){
   //Next player
   activatePlayer === 0 ? activatePlayer = 1 : activatePlayer = 0;
   roundScore=0;
+  lastRoundDice = 0;
+  currentRoundDice = 0;
 
   document.getElementById('current-0').textContent= '0';
   document.getElementById('current-1').textContent= '0';
@@ -103,3 +121,19 @@ function nextPlayer(){
   document.querySelector('.dice').style.display='none';
 
 };
+
+
+/*
+YOUR 3 CHALLENGES
+Change the game to follow these rules:
+
+1. A player looses his ENTIRE score when he rolls two 6 in a row. After that,
+it's the next player's turn.
+
+2. Add a input field to the HTML where players can set the winning score,
+so that they can change the predefined score of 100.
+
+3. Add another dice to the game, so that there are two dices now. The player
+looses his current score when one of them is a 1.
+
+*/
