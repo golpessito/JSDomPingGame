@@ -9,7 +9,7 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activatePlayer, gamePlaying, lastRoundDice, currentRoundDice, finalScore;
+var scores, roundScore, activatePlayer, gamePlaying, currentRoundDice1,currentRoundDice2,finalScore;
 
 // init();
 
@@ -18,15 +18,20 @@ document.querySelector(".btn-roll").addEventListener('click',function(){
   if(gamePlaying){
 
     // 1. Random number
-    currentRoundDice = Math.floor(Math.random()*6)+1;
+    currentRoundDice1 = Math.floor(Math.random()*6)+1;
+    currentRoundDice2 = Math.floor(Math.random()*6)+1;
 
     // 2. Display the result
-    var diceDOM=document.querySelector(".dice");
-    diceDOM.style.display = 'block';
-    diceDOM.src= 'dice-'+currentRoundDice+'.png';
+    var dice1DOM=document.querySelector(".dice1");
+    var dice2DOM=document.querySelector(".dice2");
+
+    dice1DOM.style.display = 'block';
+    dice1DOM.src= 'dice-'+currentRoundDice1+'.png';
+    dice2DOM.style.display = 'block';
+    dice2DOM.src= 'dice-'+currentRoundDice2+'.png';
 
 
-    if((currentRoundDice === 6) && (lastRoundDice === 6))
+    if((currentRoundDice1 === 6) && (currentRoundDice2 === 6))
     {
       // When roundDice and lastRoundDice both are not equal to 6, the player looses his ENTIRE score
       scores[activatePlayer] = 0;
@@ -35,11 +40,11 @@ document.querySelector(".btn-roll").addEventListener('click',function(){
       document.querySelector('#score-'+activatePlayer).textContent='0';
       nextPlayer();
     }
-    else if (currentRoundDice !== 1)
+    else if ((currentRoundDice1 !== 1) && (currentRoundDice2 !== 1))
     {
       //Update the round score IF the rolled number was a NOT 1 and
       //Add score
-      roundScore += currentRoundDice;
+      roundScore += currentRoundDice1 + currentRoundDice2;
       document.querySelector('#current-'+activatePlayer).textContent=roundScore;
 
     }
@@ -48,7 +53,6 @@ document.querySelector(".btn-roll").addEventListener('click',function(){
       nextPlayer();
     }
 
-     lastRoundDice=currentRoundDice;
   }
 
 });
@@ -63,7 +67,8 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
 
     if (scores[activatePlayer] >= finalScore){
       document.querySelector('#name-'+activatePlayer).textContent="Winner!";
-      document.querySelector('.dice').style.display='none';
+      document.querySelector('.dice1').style.display='none';
+      document.querySelector('.dice2').style.display='none';
       document.querySelector('.player-'+activatePlayer+'-panel').classList.add('winner');
       document.querySelector('.player-'+activatePlayer+'-panel').classList.remove('active');
       gamePlaying=false;
@@ -95,8 +100,8 @@ function init(){
   roundScore = 0;
   activatePlayer = 0;
   gamePlaying = true;
-  lastRoundDice = 0;
-  currentRoundDice = 0;
+  currentRoundDice1 = 0;
+  currentRoundDice2 = 0;
   finalScore=100;
 
   finalScore = document.getElementById('final_score').value;
@@ -104,10 +109,11 @@ function init(){
   ///Hidden Configuration Final Score Panel
   document.getElementById('final-score-panel').style.display='none';
 
-  //Show Game Panel
+  //Show Configuration
   document.getElementById('game-panel').style.display='block';
 
-  document.querySelector(".dice").style.display = 'none';
+  document.querySelector(".dice1").style.display = 'none';
+  document.querySelector(".dice2").style.display = 'none';
   document.getElementById('score-0').textContent= '0';
   document.getElementById('score-1').textContent= '0';
   document.getElementById('current-0').textContent= '0';
@@ -129,8 +135,8 @@ function nextPlayer(){
   //Next player
   activatePlayer === 0 ? activatePlayer = 1 : activatePlayer = 0;
   roundScore=0;
-  lastRoundDice = 0;
-  currentRoundDice = 0;
+  currentRoundDice1 = 0;
+  currentRoundDice2 = 0;
 
   document.getElementById('current-0').textContent= '0';
   document.getElementById('current-1').textContent= '0';
@@ -141,7 +147,8 @@ function nextPlayer(){
   //document.querySelector('.player-0-panel').classList.remove('active');
   //document.querySelector('.player-1-panel').classList.add('active');
 
-  document.querySelector('.dice').style.display='none';
+  document.querySelector('.dice1').style.display='none';
+  document.querySelector('.dice2').style.display='none';
 
 };
 
