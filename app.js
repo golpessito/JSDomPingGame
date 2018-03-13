@@ -9,9 +9,9 @@ GAME RULES:
 
 */
 
-var scores, roundScore, activatePlayer, gamePlaying, lastRoundDice, currentRoundDice;
+var scores, roundScore, activatePlayer, gamePlaying, lastRoundDice, currentRoundDice, finalScore;
 
-init();
+// init();
 
 document.querySelector(".btn-roll").addEventListener('click',function(){
 
@@ -29,7 +29,7 @@ document.querySelector(".btn-roll").addEventListener('click',function(){
     if((currentRoundDice === 6) && (lastRoundDice === 6))
     {
       // When roundDice and lastRoundDice both are not equal to 6, the player looses his ENTIRE score
-      scores[activatePlayer]=0;
+      scores[activatePlayer] = 0;
 
       // Update the UI
       document.querySelector('#score-'+activatePlayer).textContent='0';
@@ -61,7 +61,7 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
     // Update the UI
     document.querySelector('#score-'+activatePlayer).textContent=scores[activatePlayer];
 
-    if (scores[activatePlayer] >= 100){
+    if (scores[activatePlayer] >= finalScore){
       document.querySelector('#name-'+activatePlayer).textContent="Winner!";
       document.querySelector('.dice').style.display='none';
       document.querySelector('.player-'+activatePlayer+'-panel').classList.add('winner');
@@ -74,15 +74,38 @@ document.querySelector('.btn-hold').addEventListener('click',function(){
   }
 });
 
-document.querySelector('.btn-new').addEventListener('click',init);
+document.querySelector('.btn-new').addEventListener('click',configureGame);
+
+document.querySelector('.btn-final-score').addEventListener('click',init);
+
+function configureGame(){
+
+  //Show Configuration Final Score Panel
+  document.getElementById('final_score').value=100;
+  document.getElementById('final-score-panel').style.display='block';
+
+  //Hidden Game Panel
+  document.getElementById('game-panel').style.display='none';
+
+}
 
 function init(){
+
   scores = [0,0];
   roundScore = 0;
   activatePlayer = 0;
   gamePlaying = true;
   lastRoundDice = 0;
   currentRoundDice = 0;
+  finalScore=100;
+
+  finalScore = document.getElementById('final_score').value;
+
+  ///Hidden Configuration Final Score Panel
+  document.getElementById('final-score-panel').style.display='none';
+
+  //Show Game Panel
+  document.getElementById('game-panel').style.display='block';
 
   document.querySelector(".dice").style.display = 'none';
   document.getElementById('score-0').textContent= '0';

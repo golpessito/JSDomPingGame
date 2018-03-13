@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
 }
 
 .clearfix::after {
@@ -35,6 +35,13 @@ body {
     background-color: #fff;
     box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+}
+
+.final-score {
+  width:600px;
+  height:300px;
+  text-align: center;
+  padding-top: 30px;
 }
 
 .player-0-panel,
@@ -80,7 +87,7 @@ body {
     color: #EB4D4D;
     top: -7px;
     right: 10px;
-    
+
 }
 
 .player-current-box {
